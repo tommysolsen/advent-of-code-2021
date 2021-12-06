@@ -11,6 +11,7 @@ defmodule AdventOfCode do
     |> filter(&(!!&1))
   end
 
+  def remove_blanks(lines), do: filter(lines, &(&1 != ""))
   def as_ints(list), do: map(list, &Integer.parse/1) |> map(&elem(&1, 0))
 
   def parseInt!(v), do: elem(Integer.parse(v), 0)
