@@ -8,17 +8,7 @@ defmodule AdventOfCode.Day4 do
   4512
   """
   def solve_1(assignment \\ "04") do
-    {drawn_numbers, board_data} =
-      input(assignment)
-      |> get_drawn_numbers()
-
-    boards =
-      get_boards(board_data)
-      |> map(fn x ->
-        map(x, &add_picked_state/1)
-      end)
-      |> chunk_every(5)
-
+    {drawn_numbers, boards} = parse_input(assignment)
     solve_1(drawn_numbers, boards, 5)
   end
 
@@ -41,17 +31,7 @@ defmodule AdventOfCode.Day4 do
   1924
   """
   def solve_2(assignment \\ "04") do
-    {drawn_numbers, board_data} =
-      input(assignment)
-      |> get_drawn_numbers()
-
-    boards =
-      get_boards(board_data)
-      |> map(fn x ->
-        map(x, &add_picked_state/1)
-      end)
-      |> chunk_every(5)
-
+    {drawn_numbers, boards} = parse_input(assignment)
     solve_2(drawn_numbers, boards, 5)
   end
 
@@ -217,4 +197,19 @@ defmodule AdventOfCode.Day4 do
       |> map(&String.to_integer/1),
       tail
     }
+
+  defp parse_input(assignment) do
+    {drawn_numbers, board_data} =
+      input(assignment)
+      |> get_drawn_numbers()
+
+    boards =
+      get_boards(board_data)
+      |> map(fn x ->
+        map(x, &add_picked_state/1)
+      end)
+      |> chunk_every(5)
+
+    {drawn_numbers, boards}
+  end
 end
