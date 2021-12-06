@@ -13,16 +13,13 @@ defmodule AdventOfCode.Day5 do
     input(assignment)
     |> remove_blanks
     |> map(&parse_input/1)
-    |> map(& expand(&1, only_cardinals))
+    |> map(&expand(&1, only_cardinals))
     |> List.flatten()
-    |> reduce(%{}, fn x, acc -> Map.update(acc, x, 1, &(&1+1)) end)
-    |> map(&(elem(&1,1)))
+    |> reduce(%{}, fn x, acc -> Map.update(acc, x, 1, &(&1 + 1)) end)
+    |> map(&elem(&1, 1))
     |> filter(&(&1 > 1))
     |> count
   end
-
-  def
-
 
   def solve_2(assignment \\ "05"), do: solve_1(assignment, false)
 
@@ -35,7 +32,7 @@ defmodule AdventOfCode.Day5 do
   """
   def parse_input(str) do
     Regex.run(~r/(\d+),(\d+) ?-> ?(\d+).(\d+)/, str)
-    |> slice(1,4)
+    |> slice(1, 4)
     |> map(&String.to_integer/1)
     |> chunk_every(2)
     |> map(&List.to_tuple/1)
@@ -56,26 +53,29 @@ defmodule AdventOfCode.Day5 do
   iex> AdventOfCode.Day5.get_range({9,7}, {7,9}, false)
   [{9,7}, {8,8}, {7,9}]
   """
-  def get_range({x, y}, {z, y}, true), do: map(x..z, &({&1, y}))
-  def get_range({x, y}, {x, z}, true), do: map(y..z, &({x, &1}))
+  def get_range({x, y}, {z, y}, true), do: map(x..z, &{&1, y})
+  def get_range({x, y}, {x, z}, true), do: map(y..z, &{x, &1})
   def get_range(_, _, true), do: []
-  def get_range({x,y}, {x,y}, false), do: [{x,y}]
+  def get_range({x, y}, {x, y}, false), do: [{x, y}]
+
   def get_range({x, y}, {a, d}, false) do
-    [{x, y}] ++ get_range(
-      {
-        next_number(x, a),
-        next_number(y, d)
-      }, 
-      {a, d},
-      false
-    )
+    [{x, y}] ++
+      get_range(
+        {
+          next_number(x, a),
+          next_number(y, d)
+        },
+        {a, d},
+        false
+      )
   end
+
   def get_range(x, y) do
-    IO.inspect([x,y])
+    IO.inspect([x, y])
     []
   end
 
   def next_number(x, y) when x < y, do: x + 1
   def next_number(x, y) when x > y, do: x - 1
-  def next_number(x,x), do: x
+  def next_number(x, x), do: x
 end
